@@ -39,5 +39,6 @@
 @protocol TRSuggestionItem <NSObject>
 
 - (NSString *)completionText;
+- (NSString *)getID;
 
 @end

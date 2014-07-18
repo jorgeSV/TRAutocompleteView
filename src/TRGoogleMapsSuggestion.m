@@ -31,11 +31,14 @@
 
 @implementation TRGoogleMapsSuggestion
 
-- (id)initWith:(NSString *)address
+- (id)initWith:(NSString *)address WithID:(NSString*)_id
 {
     self = [super init];
     if (self)
+    {
         self.address = address;
+        self._id = _id;
+    }
 
     return self;
 }
@@ -43,6 +46,11 @@
 - (NSString *)completionText
 {
     return self.address;
+}
+
+- (NSString *)getID
+{
+    return self._id;
 }
 
 @end

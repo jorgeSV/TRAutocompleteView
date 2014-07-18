@@ -38,5 +38,6 @@
 
 - (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger apiKey:(NSString *)apiKey;
 - (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger language: (NSString*) language apiKey:(NSString *)apiKey;
+- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger language:(NSString*)language apiKey:(NSString *)apiKey types:(NSString *)types;
 
 @end

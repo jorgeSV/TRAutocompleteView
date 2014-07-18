@@ -65,7 +65,8 @@
 
     _autocompleteView.didAutocompleteWith = ^(id<TRSuggestionItem> item)
     {
-        NSLog(@"Autocompleted with: %@", item.completionText);
+        NSLog(@"Autocompleted with description: %@", item.completionText);
+        NSLog(@"Autocompleted with id: %@", item.getID);
     };
 }
 

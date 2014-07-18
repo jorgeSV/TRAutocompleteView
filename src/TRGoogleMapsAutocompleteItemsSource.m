@@ -41,10 +41,31 @@
 {
     NSString *_apiKey;
     NSString *_language;
+    NSString *_types;
     NSUInteger _minimumCharactersToTrigger;
 
     BOOL _requestToReload;
     BOOL _loading;
+}
+
+- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger
+                                language:(NSString *)language
+                                  apiKey:(NSString *)apiKey
+                                   types:(NSString *)types
+{
+    self = [super init];
+    if (self)
+    {
+        _minimumCharactersToTrigger = minimumCharactersToTrigger;
+        _apiKey = apiKey;
+        _language = language;
+        _types = types;
+        
+        self.location = kCLLocationCoordinate2DInvalid;
+        self.radiusMeters = -1;
+    }
+    
+    return self;
 }
 
 - (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger
@@ -109,7 +130,7 @@
              for (NSDictionary *place in predictions)
              {
                  TRGoogleMapsSuggestion
-                 *suggestion = [[TRGoogleMapsSuggestion alloc] initWith:[place objectForKey:@"description"]];
+                 *suggestion = [[TRGoogleMapsSuggestion alloc] initWith:[place objectForKey:@"description"] WithID:[place objectForKey:@"id"]];
                  [suggestions addObject:suggestion];
              }
              
@@ -184,11 +205,13 @@
 
 - (NSString*) autocompleteUrlFor:(NSString*)query
 {
-    NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@",
-                                                  [query urlEncode]];
+    NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@", [query urlEncode]];
 
-    [urlString appendFormat:@"&key=%@", _apiKey];
+    if(_types)
+        [urlString appendFormat:@"&types=%@", _types];
+    
     [urlString appendFormat:@"&language=%@", _language];
+    [urlString appendFormat:@"&key=%@", _apiKey];
 
     if (CLLocationCoordinate2DIsValid(self.location))
     {
