@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TRAutocompleteView"
-  s.version      = “1.2”
+  s.version      = "1.2"
   s.summary      = "Flexible and highly configurable auto complete view, attachable to any UITextField."
 
   s.homepage     = "https://github.com/jorgeSV/TRAutocompleteView"
