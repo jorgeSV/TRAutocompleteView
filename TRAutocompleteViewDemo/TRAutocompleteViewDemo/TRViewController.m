@@ -42,26 +42,15 @@
 - (void)loadView
 {
     [super loadView];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"debut_dark"]
-                                                                         resizableImageWithCapInsets:UIEdgeInsetsMake(0,
-                                                                                                                      0,
-                                                                                                                      0,
-                                                                                                                      0)]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"debut_dark"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
 
     [_textField setLeftPadding:9];
-    _autocompleteView = [TRAutocompleteView autocompleteViewBindedTo:_textField
-                                                         usingSource:[[TRGoogleMapsAutocompleteItemsSource alloc]
-                                                                                                           initWithMinimumCharactersToTrigger:2
-                                                                                                                                       apiKey:@"INSERT_YOUR_PLACES_API_KEY_HERE"]
-                                                         cellFactory:[[TRGoogleMapsAutocompletionCellFactory alloc]
-                                                                                                             initWithCellForegroundColor:[UIColor lightGrayColor]
-                                                                                                                                fontSize:14]
-                                                        presentingIn:self];
-    _autocompleteView.topMargin = -5;
-    _autocompleteView.backgroundColor = [UIColor colorWithRed:(27) / 255.0f
-                                                        green:(27) / 255.0f
-                                                         blue:(27) / 255.0f
-                                                        alpha:1];
+    _autocompleteView = [TRAutocompleteView autocompleteViewBindedTo:_textField usingSource:[[TRGoogleMapsAutocompleteItemsSource alloc] initWithMinimumCharactersToTrigger:3  language:@"es" apiKey:@"AIzaSyBfEbzhgPJh7rwk1PYzhcw9I-69EmcZ3CI" types:@"(cities)"] cellFactory:[[TRGoogleMapsAutocompletionCellFactory alloc] initWithCellForegroundColor:[UIColor lightGrayColor] fontSize:14] presentingIn:self];
+    
+    _autocompleteView.topMargin = 0;
+    //_autocompleteView.backgroundColor = [UIColor colorWithRed:(27) / 255.0f green:(27) / 255.0f blue:(27) / 255.0f alpha:1];
+    _autocompleteView.backgroundColor = [UIColor whiteColor];
+    _autocompleteView.cellHeight = 33;
 
     _autocompleteView.didAutocompleteWith = ^(id<TRSuggestionItem> item)
     {

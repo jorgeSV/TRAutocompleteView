@@ -44,10 +44,8 @@
 @property(nonatomic) UITableViewCellSeparatorStyle separatorStyle;
 
 @property(nonatomic) CGFloat topMargin;
+@property(nonatomic) float cellHeight;
 
-+ (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField
-                                     usingSource:(id <TRAutocompleteItemsSource>)itemsSource
-                                     cellFactory:(id <TRAutocompletionCellFactory>)factory
-                                    presentingIn:(UIViewController *)controller;
++ (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField usingSource:(id <TRAutocompleteItemsSource>)itemsSource cellFactory:(id <TRAutocompletionCellFactory>)factory presentingIn:(UIViewController *)controller;
 
 @end

@@ -62,9 +62,8 @@
 
 - (id <TRAutocompletionCell>)createReusableCellWithIdentifier:(NSString *)identifier
 {
-    TRGoogleMapsAutocompletionCell *cell = [[TRGoogleMapsAutocompletionCell alloc]
-                                                                            initWithStyle:UITableViewCellStyleDefault
-                                                                          reuseIdentifier:identifier];
+    TRGoogleMapsAutocompletionCell *cell = [[TRGoogleMapsAutocompletionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    
     cell.textLabel.font = [UIFont systemFontOfSize:_fontSize];
     cell.textLabel.textColor = _foregroundColor;
 

@@ -28,30 +28,44 @@
 //
 
 #import "TRGoogleMapsAutocompleteItemsSource.h"
-#define AFNETWORKING_2 1
-#ifdef AFNETWORKING_2
-#import "AFHTTPSessionManager.h"
-#else
-#import "AFJSONRequestOperation.h"
-#endif
 #import "TRStringExtensions.h"
 #import "TRGoogleMapsSuggestion.h"
 
+#define AFNETWORKING_2 1
+
+#ifdef AFNETWORKING_2
+    #import "AFHTTPSessionManager.h"
+#else
+    #import "AFJSONRequestOperation.h"
+#endif
+
+@interface TRGoogleMapsAutocompleteItemsSource()
+
+@property NSString *apiKey;
+@property NSString *language;
+@property NSString *types;
+@property (nonatomic) NSUInteger minimumCharactersToTrigger;
+
+@property BOOL requestToReload;
+@property BOOL loading;
+
+@property int requestCount;
+
+#ifdef AFNETWORKING_2
+
+    @property AFHTTPSessionManager *manager;
+
+#else
+
+    @property AFJSONRequestOperation *operation;
+
+#endif
+
+@end
+
 @implementation TRGoogleMapsAutocompleteItemsSource
-{
-    NSString *_apiKey;
-    NSString *_language;
-    NSString *_types;
-    NSUInteger _minimumCharactersToTrigger;
 
-    BOOL _requestToReload;
-    BOOL _loading;
-}
-
-- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger
-                                language:(NSString *)language
-                                  apiKey:(NSString *)apiKey
-                                   types:(NSString *)types
+- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger language:(NSString *)language apiKey:(NSString *)apiKey types:(NSString *)types
 {
     self = [super init];
     if (self)
@@ -61,16 +75,16 @@
         _language = language;
         _types = types;
         
-        self.location = kCLLocationCoordinate2DInvalid;
-        self.radiusMeters = -1;
+        _location = kCLLocationCoordinate2DInvalid;
+        _radiusMeters = -1;
+        
+        _requestCount = 0;
     }
     
     return self;
 }
 
-- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger
-                                language:(NSString *)language
-                                  apiKey:(NSString *)apiKey
+- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger language:(NSString *)language apiKey:(NSString *)apiKey
 {
     self = [super init];
     if (self)
@@ -79,15 +93,14 @@
         _apiKey = apiKey;
         _language = language;
         
-        self.location = kCLLocationCoordinate2DInvalid;
-        self.radiusMeters = -1;
+        _location = kCLLocationCoordinate2DInvalid;
+        _radiusMeters = -1;
     }
     
     return self;
 }
 
-- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger
-                                  apiKey:(NSString *)apiKey
+- (id)initWithMinimumCharactersToTrigger:(NSUInteger)minimumCharactersToTrigger apiKey:(NSString *)apiKey
 {
     return [self initWithMinimumCharactersToTrigger:minimumCharactersToTrigger language:@"en" apiKey:apiKey];
 }
@@ -114,56 +127,62 @@
 
 - (void)requestSuggestionsFor:(NSString *)query whenReady:(void (^)(NSArray *))suggestionsReady
 {
-    #ifdef AFNETWORKING_2
+#ifdef AFNETWORKING_2
+    
     NSString *urlString = [self autocompleteUrlFor:query];
-    NSLog(@"calling for suggestions %@",urlString);
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manager GET:urlString
-      parameters:nil
-         success:^(NSURLSessionDataTask *task, id responseObject) {
-             NSLog(@"received response from places: %@",responseObject);
-             NSMutableArray *suggestions = [[NSMutableArray alloc] init];
-             NSArray *predictions = [responseObject objectForKey:@"predictions"];
+    NSLog(@"calling for suggestions %@", urlString);
+    
+    if(!_manager)
+    {
+        _manager = [AFHTTPSessionManager manager];
+        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    }
+    
+    [_manager GET:urlString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
+    {
+        _requestCount++;
+        NSLog(@"received response: %d", _requestCount);
+        //NSLog(@"received response from places: %@",responseObject);
+        NSMutableArray *suggestions = [[NSMutableArray alloc] init];
+        NSArray *predictions = [responseObject objectForKey:@"predictions"];
+         
+         for (NSDictionary *place in predictions)
+         {
+             TRGoogleMapsSuggestion *suggestion = [[TRGoogleMapsSuggestion alloc] initWith:[place objectForKey:@"description"] WithID:[place objectForKey:@"id"]];
+             [suggestions addObject:suggestion];
+         }
+         
+         if (suggestionsReady)
+             suggestionsReady(suggestions);
+         
+         @synchronized (self)
+         {
+             _loading = NO;
              
-             for (NSDictionary *place in predictions)
+             if (_requestToReload)
              {
-                 TRGoogleMapsSuggestion
-                 *suggestion = [[TRGoogleMapsSuggestion alloc] initWith:[place objectForKey:@"description"] WithID:[place objectForKey:@"id"]];
-                 [suggestions addObject:suggestion];
-             }
-             
-             if (suggestionsReady)
-                 suggestionsReady(suggestions);
-             
-             @synchronized (self)
-             {
-                 _loading = NO;
-                 
-                 if (_requestToReload)
-                 {
-                     _requestToReload = NO;
-                     [self itemsFor:query whenReady:suggestionsReady];
-                 }
+                 _requestToReload = NO;
+                 //[self itemsFor:query whenReady:suggestionsReady];
              }
          }
-         failure:^(NSURLSessionDataTask *task, NSError *error) {
-             
-             NSLog(@"Error while loading suggestions: %@", error);
-             @synchronized (self)
-             {
-                 _loading = NO;
-             }
+     }
+     failure:^(NSURLSessionDataTask *task, NSError *error)
+     {
+         NSLog(@"Error while loading suggestions: %@", error);
+         @synchronized (self)
+         {
+             _loading = NO;
+         }
 
-         }];
+     }];
+    
 #else
+    
     NSString *urlString = [self autocompleteUrlFor:query];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     
-    AFJSONRequestOperation *operation =
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    _operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:urlRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
          NSMutableArray *suggestions = [[NSMutableArray alloc] init];
          NSArray *predictions = [JSON objectForKey:@"predictions"];
@@ -189,7 +208,7 @@
              }
          }
      }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id json)
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id json)
      {
          NSLog(@"Error while loading suggestions: %@", error);
          @synchronized (self)
@@ -198,13 +217,16 @@
          }
      }];
     
-    [operation start];
+    [_operation start];
+    
 #endif
 
 }
 
 - (NSString*) autocompleteUrlFor:(NSString*)query
 {
+    [self cancelQuery];
+    
     NSMutableString *urlString = [NSMutableString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@", [query urlEncode]];
 
     if(_types)
@@ -224,6 +246,20 @@
         [urlString appendFormat:@"&sensor=%@", @"false"];
 
     return urlString;
+}
+
+- (void) cancelQuery
+{
+
+#ifdef AFNETWORKING_2
+    
+    NSLog(@"Cancel Query . Remove Tasks: %lu", (unsigned long)_manager.tasks.count);
+    
+    //[_manager invalidateSessionCancelingTasks:YES];
+    [_manager.operationQueue cancelAllOperations];
+
+#endif
+    
 }
 
 @end

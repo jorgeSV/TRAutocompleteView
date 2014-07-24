@@ -50,23 +50,12 @@
     id <TRAutocompletionCellFactory> _cellFactory;
 }
 
-+ (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField
-                                     usingSource:(id <TRAutocompleteItemsSource>)itemsSource
-                                     cellFactory:(id <TRAutocompletionCellFactory>)factory
-                                    presentingIn:(UIViewController *)controller
++ (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField usingSource:(id <TRAutocompleteItemsSource>)itemsSource cellFactory:(id <TRAutocompletionCellFactory>)factory presentingIn:(UIViewController *)controller
 {
-    return [[TRAutocompleteView alloc] initWithFrame:CGRectZero
-                                           textField:textField
-                                         itemsSource:itemsSource
-                                         cellFactory:factory
-                                          controller:controller];
+    return [[TRAutocompleteView alloc] initWithFrame:CGRectZero textField:textField itemsSource:itemsSource cellFactory:factory controller:controller];
 }
 
-- (id)initWithFrame:(CGRect)frame
-          textField:(UITextField *)textField
-        itemsSource:(id <TRAutocompleteItemsSource>)itemsSource
-        cellFactory:(id <TRAutocompletionCellFactory>)factory
-         controller:(UIViewController *)controller
+- (id)initWithFrame:(CGRect)frame textField:(UITextField *)textField itemsSource:(id <TRAutocompleteItemsSource>)itemsSource cellFactory:(id <TRAutocompletionCellFactory>)factory  controller:(UIViewController *)controller
 {
     self = [super initWithFrame:frame];
     if (self)
@@ -79,25 +68,15 @@
         _contextController = controller;
 
         _table = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _table.backgroundColor = [UIColor clearColor];
+        _table.backgroundColor = [UIColor whiteColor];
         _table.separatorColor = self.separatorColor;
         _table.separatorStyle = self.separatorStyle;
         _table.delegate = self;
         _table.dataSource = self;
 
-        [[NSNotificationCenter defaultCenter]
-                               addObserver:self
-                                  selector:@selector(queryChanged:)
-                                      name:UITextFieldTextDidChangeNotification
-                                    object:_queryTextField];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWasShown:)
-                                                     name:UIKeyboardDidShowNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryChanged:) name:UITextFieldTextDidChangeNotification object:_queryTextField];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
         [self addSubview:_table];
     }
@@ -105,14 +84,22 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
 - (void)loadDefaults
 {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
 
-    self.separatorColor = [UIColor lightGrayColor];
-    self.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _separatorColor = [UIColor lightGrayColor];
+    _separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    self.topMargin = 0;
+    _topMargin = 0;
+    _cellHeight = 30.0f;
 }
 
 - (void)keyboardWasShown:(NSNotification *)notification
@@ -140,10 +127,7 @@
 
     calculatedHeight += _contextController.tabBarController.tabBar.frame.size.height; //keyboard is shown over it, need to compensate
 
-    self.frame = CGRectMake(_queryTextField.frame.origin.x,
-                            calculatedY,
-                            _queryTextField.frame.size.width,
-                            calculatedHeight);
+    self.frame = CGRectMake(_queryTextField.frame.origin.x, calculatedY, _queryTextField.frame.size.width, calculatedHeight);
     _table.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
 }
 
@@ -156,39 +140,46 @@
 - (void)queryChanged:(id)sender
 {
     if ([_queryTextField.text length] >= _itemsSource.minimumCharactersToTrigger)
-    {
-        [_itemsSource itemsFor:_queryTextField.text whenReady:
-                                                            ^(NSArray *suggestions)
-                                                            {
-                                                                if (_queryTextField.text.length
-                                                                    < _itemsSource.minimumCharactersToTrigger)
-                                                                {
-                                                                    self.suggestions = nil;
-                                                                    [self refreshTable];
-                                                                }
-                                                                else
-                                                                {
-                                                                    self.suggestions = suggestions;
-                                                                    [self refreshTable];
+    {        
+        [_itemsSource itemsFor:_queryTextField.text whenReady:^(NSArray *suggestions)
+        {
+            if (_queryTextField.text.length < _itemsSource.minimumCharactersToTrigger)
+            {
+                _suggestions = nil;
+                [self refreshTable];
+            }
+            else
+            {
+                _suggestions = suggestions;
+                [self refreshTable];
 
-                                                                    if (self.suggestions.count > 0 && !_visible)
-                                                                    {
-                                                                        [_contextController.view addSubview:self];
-                                                                        _visible = YES;
-                                                                    }
-                                                                }
-                                                            }];
+                if (_suggestions.count > 0 && !_visible)
+                {
+                    [_contextController.view addSubview:self];
+                    _visible = YES;
+                }
+            }
+        }];
     }
     else
     {
-        self.suggestions = nil;
+        _suggestions = nil;
         [self refreshTable];
     }
 }
 
+
+
+#pragma mark - UITableView Delegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.suggestions.count;
+    return _suggestions ? _suggestions.count : 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return _cellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,11 +190,13 @@
     if (cell == nil)
         cell = [_cellFactory createReusableCellWithIdentifier:identifier];
 
+    [cell setBackgroundColor:indexPath.row %2 == 0 ? [UIColor colorWithWhite:0.98f alpha:1.0f] : [UIColor whiteColor]];
+    
     NSAssert([cell isKindOfClass:[UITableViewCell class]], @"Cell must inherit from UITableViewCell");
     NSAssert([cell conformsToProtocol:@protocol(TRAutocompletionCell)], @"Cell must conform TRAutocompletionCell");
     UITableViewCell <TRAutocompletionCell> *completionCell = (UITableViewCell <TRAutocompletionCell> *) cell;
 
-    id suggestion = self.suggestions[(NSUInteger) indexPath.row];
+    id suggestion = _suggestions[(NSUInteger) indexPath.row];
     NSAssert([suggestion conformsToProtocol:@protocol(TRSuggestionItem)], @"Suggestion item must conform TRSuggestionItem");
     id <TRSuggestionItem> suggestionItem = (id <TRSuggestionItem>) suggestion;
 
@@ -214,7 +207,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id suggestion = self.suggestions[(NSUInteger) indexPath.row];
+    id suggestion = _suggestions[(NSUInteger) indexPath.row];
     NSAssert([suggestion conformsToProtocol:@protocol(TRSuggestionItem)], @"Suggestion item must conform TRSuggestionItem");
 
     self.selectedSuggestion = (id <TRSuggestionItem>) suggestion;
@@ -226,26 +219,14 @@
         self.didAutocompleteWith(self.selectedSuggestion);
 }
 
-- (void)refreshTable {
-    if (_queryTextField.isFirstResponder) {
-        [_table reloadData];
-    }
-}
-
-- (void)dealloc
+- (void)refreshTable
 {
-    [[NSNotificationCenter defaultCenter]
-                           removeObserver:self
-                                     name:UITextFieldTextDidChangeNotification
-                                   object:nil];
-    [[NSNotificationCenter defaultCenter]
-                           removeObserver:self
-                                     name:UIKeyboardDidShowNotification
-                                   object:nil];
-    [[NSNotificationCenter defaultCenter]
-                           removeObserver:self
-                                     name:UIKeyboardWillHideNotification
-                                   object:nil];
+    if (_queryTextField.isFirstResponder)
+    {
+        [_table reloadData];
+        [_table setFrame:CGRectMake(_table.frame.origin.x, _table.frame.origin.y, _table.frame.size.width, _cellHeight * _suggestions.count)];
+        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.height, _table.frame.size.height)];
+    }
 }
 
 @end

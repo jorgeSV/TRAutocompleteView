@@ -133,10 +133,10 @@
 		690761762B7F1B27B7986827 /* GoogleMaps */ = {
 			isa = PBXGroup;
 			children = (
-				76E6DCE016DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.m */,
 				76E6DCDF16DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.h */,
-				6907621990C7FFD5BD443369 /* TRGoogleMapsSuggestion.m */,
+				76E6DCE016DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.m */,
 				690761032FB6752BE3865BC9 /* TRGoogleMapsSuggestion.h */,
+				6907621990C7FFD5BD443369 /* TRGoogleMapsSuggestion.m */,
 				69076BB40AB16C7BEE5CE7F7 /* TRGoogleMapsAutocompletionCellFactory.h */,
 				69076D362CA3A53D355CA8FE /* TRGoogleMapsAutocompletionCellFactory.m */,
 			);
@@ -442,6 +442,7 @@
 				INFOPLIST_FILE = "TRAutocompleteViewDemo/TRAutocompleteViewDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -455,6 +456,7 @@
 				INFOPLIST_FILE = "TRAutocompleteViewDemo/TRAutocompleteViewDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
