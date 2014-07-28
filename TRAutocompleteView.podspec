@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
 
   s.homepage     = "https://github.com/jorgeSV/TRAutocompleteView"
   s.license      = 'FreeBSD'
-  s.author       = { "Taras Roshko" => "taras.roshko@gmail.com", "Jorge Souto" => "amk114@gmail.com" }
+  s.authors       = { "Taras Roshko" => "taras.roshko@gmail.com", "Jorge Souto" => "amk114@gmail.com" }
 
   s.source       = { :git => "https://github.com/jorgeSV/TRAutocompleteView.git", :tag => "v1.2" }
   s.platform     = :ios, '6.1'
