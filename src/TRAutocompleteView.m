@@ -51,6 +51,11 @@
     id <TRAutocompletionCellFactory> _cellFactory;
 }
 
++ (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField usingSource:(id <TRAutocompleteItemsSource>)itemsSource cellFactory:(id <TRAutocompletionCellFactory>)factory presentingIn:(UIViewController *)controller
+{
+    return [[TRAutocompleteView alloc] initWithFrame:CGRectZero textField:textField itemsSource:itemsSource cellFactory:factory controller:controller intoView:nil];
+}
+
 + (TRAutocompleteView *)autocompleteViewBindedTo:(UITextField *)textField usingSource:(id <TRAutocompleteItemsSource>)itemsSource cellFactory:(id <TRAutocompletionCellFactory>)factory presentingIn:(UIViewController *)controller intoView:(UIView *)viewPresenting
 {
     return [[TRAutocompleteView alloc] initWithFrame:CGRectZero textField:textField itemsSource:itemsSource cellFactory:factory controller:controller intoView:viewPresenting];
@@ -113,23 +118,23 @@
     CGFloat kbHeight = 0;
     if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
     {
-        contextViewHeight = _viewPresenting ? _viewPresenting.frame.size.height : _contextController.view.frame.size.height;
+        contextViewHeight = _contextController ? _contextController.view.frame.size.height : _viewPresenting.frame.size.height;
         kbHeight = kbSize.height;
     }
     else if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
-        contextViewHeight = _viewPresenting ? _viewPresenting.frame.size.height : _contextController.view.frame.size.height;
+        contextViewHeight = _contextController ? _contextController.view.frame.size.height : _viewPresenting.frame.size.height;
         kbHeight = kbSize.width;
     }
     
-    CGPoint textPosition = [_queryTextField convertPoint:_queryTextField.bounds.origin toView:nil]; //Taking in account Y position of queryTextField relatively to it's Window
+    CGPoint textPosition = [_queryTextField convertPoint:_queryTextField.bounds.origin toView: _viewPresenting ? _viewPresenting : _contextController.view]; //Taking in account Y position of queryTextField relatively to it's Window
     
     CGFloat calculatedY = textPosition.y + _queryTextField.frame.size.height + self.topMargin;
     CGFloat calculatedHeight = contextViewHeight - calculatedY - kbHeight;
     
-    calculatedHeight += _contextController.tabBarController.tabBar.frame.size.height; //keyboard is shown over it, need to compensate
+    calculatedHeight += _contextController ? _contextController.tabBarController.tabBar.frame.size.height : 0; //keyboard is shown over it, need to compensate
     
-    self.frame = CGRectMake(_queryTextField.frame.origin.x, calculatedY, _queryTextField.frame.size.width, calculatedHeight);
+    self.frame = CGRectMake(_viewPresenting ? _queryTextField.frame.origin.x + _viewPresenting.frame.origin.x : _queryTextField.frame.origin.x, _viewPresenting ? calculatedY - _viewPresenting.frame.origin.y : calculatedY, _queryTextField.frame.size.width, calculatedHeight);
     _table.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
 }
 
@@ -157,7 +162,7 @@
                  
                  if (_suggestions.count > 0 && !_visible)
                  {
-                     [_viewPresenting ? _viewPresenting : _contextController.view addSubview:self];
+                     [_contextController ? _contextController.view : _viewPresenting addSubview:self];
                      _visible = YES;
                  }
              }
