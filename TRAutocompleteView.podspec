@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/jorgeSV/TRAutocompleteView.git", :tag => "v1.2" }
   s.platform     = :ios, '6.1'
   s.source_files = 'src'
+  s.resources = "Resources/*.png"
   s.requires_arc = true
   
   s.frameworks = 'CoreLocation'
