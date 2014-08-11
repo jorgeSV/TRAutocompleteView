@@ -28,10 +28,6 @@
 		76E6DCD316DE10E500F53C02 /* TRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6DCD216DE10E500F53C02 /* TRViewController.m */; };
 		76E6DCE116DE129C00F53C02 /* TRAutocompleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6DCDC16DE129C00F53C02 /* TRAutocompleteView.m */; };
 		76E6DCE316DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6DCE016DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.m */; };
-		AE7B1BBC199532A9007E16AA /* powered-by-google-on-non-white-compressor.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7B1BB8199532A9007E16AA /* powered-by-google-on-non-white-compressor.png */; };
-		AE7B1BBD199532A9007E16AA /* powered-by-google-on-non-white@2x-compressor.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7B1BB9199532A9007E16AA /* powered-by-google-on-non-white@2x-compressor.png */; };
-		AE7B1BBE199532A9007E16AA /* powered-by-google-on-white-compressor.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7B1BBA199532A9007E16AA /* powered-by-google-on-white-compressor.png */; };
-		AE7B1BBF199532A9007E16AA /* powered-by-google-on-white@2x-compressor.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7B1BBB199532A9007E16AA /* powered-by-google-on-white@2x-compressor.png */; };
 		AE8B809F1979615D000E199B /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AE8B808D1979615D000E199B /* AFHTTPRequestOperation.m */; };
 		AE8B80A01979615D000E199B /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE8B808F1979615D000E199B /* AFHTTPRequestOperationManager.m */; };
 		AE8B80A11979615D000E199B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE8B80911979615D000E199B /* AFHTTPSessionManager.m */; };
@@ -44,6 +40,10 @@
 		AE8B80A9197962DB000E199B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8B80A8197962DB000E199B /* SystemConfiguration.framework */; };
 		AE8B80AB19796306000E199B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8B80AA19796306000E199B /* Security.framework */; };
 		AE8B80AD19796362000E199B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8B80AC19796362000E199B /* MobileCoreServices.framework */; };
+		AE94EDFC1998B81600886432 /* powered-by-google-on-non-white.png in Resources */ = {isa = PBXBuildFile; fileRef = AE94EDF81998B81600886432 /* powered-by-google-on-non-white.png */; };
+		AE94EDFD1998B81600886432 /* powered-by-google-on-non-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE94EDF91998B81600886432 /* powered-by-google-on-non-white@2x.png */; };
+		AE94EDFE1998B81600886432 /* powered-by-google-on-white.png in Resources */ = {isa = PBXBuildFile; fileRef = AE94EDFA1998B81600886432 /* powered-by-google-on-white.png */; };
+		AE94EDFF1998B81600886432 /* powered-by-google-on-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE94EDFB1998B81600886432 /* powered-by-google-on-white@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,10 +81,6 @@
 		76E6DCDC16DE129C00F53C02 /* TRAutocompleteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRAutocompleteView.m; path = ../src/TRAutocompleteView.m; sourceTree = "<group>"; };
 		76E6DCDF16DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRGoogleMapsAutocompleteItemsSource.h; path = ../src/TRGoogleMapsAutocompleteItemsSource.h; sourceTree = "<group>"; };
 		76E6DCE016DE129C00F53C02 /* TRGoogleMapsAutocompleteItemsSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRGoogleMapsAutocompleteItemsSource.m; path = ../src/TRGoogleMapsAutocompleteItemsSource.m; sourceTree = "<group>"; };
-		AE7B1BB8199532A9007E16AA /* powered-by-google-on-non-white-compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-non-white-compressor.png"; sourceTree = "<group>"; };
-		AE7B1BB9199532A9007E16AA /* powered-by-google-on-non-white@2x-compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-non-white@2x-compressor.png"; sourceTree = "<group>"; };
-		AE7B1BBA199532A9007E16AA /* powered-by-google-on-white-compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white-compressor.png"; sourceTree = "<group>"; };
-		AE7B1BBB199532A9007E16AA /* powered-by-google-on-white@2x-compressor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white@2x-compressor.png"; sourceTree = "<group>"; };
 		AE8B808C1979615D000E199B /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		AE8B808D1979615D000E199B /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		AE8B808E1979615D000E199B /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -107,6 +103,10 @@
 		AE8B80A8197962DB000E199B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AE8B80AA19796306000E199B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AE8B80AC19796362000E199B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		AE94EDF81998B81600886432 /* powered-by-google-on-non-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-non-white.png"; sourceTree = "<group>"; };
+		AE94EDF91998B81600886432 /* powered-by-google-on-non-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-non-white@2x.png"; sourceTree = "<group>"; };
+		AE94EDFA1998B81600886432 /* powered-by-google-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white.png"; sourceTree = "<group>"; };
+		AE94EDFB1998B81600886432 /* powered-by-google-on-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powered-by-google-on-white@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,8 +130,8 @@
 		6907600F96062972EB3D7C2F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				76272FC316DE7DF8002B848B /* TRTextFieldExtensions.m */,
 				76272FC216DE7DF8002B848B /* TRTextFieldExtensions.h */,
+				76272FC316DE7DF8002B848B /* TRTextFieldExtensions.m */,
 				76272FC016DE7DF8002B848B /* TRStringExtensions.h */,
 				76272FC116DE7DF8002B848B /* TRStringExtensions.m */,
 			);
@@ -239,10 +239,10 @@
 		AE7B1BB7199532A9007E16AA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AE7B1BB8199532A9007E16AA /* powered-by-google-on-non-white-compressor.png */,
-				AE7B1BB9199532A9007E16AA /* powered-by-google-on-non-white@2x-compressor.png */,
-				AE7B1BBA199532A9007E16AA /* powered-by-google-on-white-compressor.png */,
-				AE7B1BBB199532A9007E16AA /* powered-by-google-on-white@2x-compressor.png */,
+				AE94EDF81998B81600886432 /* powered-by-google-on-non-white.png */,
+				AE94EDF91998B81600886432 /* powered-by-google-on-non-white@2x.png */,
+				AE94EDFA1998B81600886432 /* powered-by-google-on-white.png */,
+				AE94EDFB1998B81600886432 /* powered-by-google-on-white@2x.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -327,18 +327,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE94EDFD1998B81600886432 /* powered-by-google-on-non-white@2x.png in Resources */,
+				AE94EDFC1998B81600886432 /* powered-by-google-on-non-white.png in Resources */,
+				AE94EDFF1998B81600886432 /* powered-by-google-on-white@2x.png in Resources */,
 				76E6DCBE16DE10E500F53C02 /* InfoPlist.strings in Resources */,
 				76E6DCC616DE10E500F53C02 /* Default.png in Resources */,
 				76E6DCC816DE10E500F53C02 /* Default@2x.png in Resources */,
-				AE7B1BBF199532A9007E16AA /* powered-by-google-on-white@2x-compressor.png in Resources */,
-				AE7B1BBC199532A9007E16AA /* powered-by-google-on-non-white-compressor.png in Resources */,
+				AE94EDFE1998B81600886432 /* powered-by-google-on-white.png in Resources */,
 				76E6DCCA16DE10E500F53C02 /* Default-568h@2x.png in Resources */,
 				76E6DCCD16DE10E500F53C02 /* MainStoryboard_iPhone.storyboard in Resources */,
-				AE7B1BBE199532A9007E16AA /* powered-by-google-on-white-compressor.png in Resources */,
 				76E6DCD016DE10E500F53C02 /* MainStoryboard_iPad.storyboard in Resources */,
 				69076AE5138352DEDA7B55D5 /* debut_dark_@2X.png in Resources */,
 				69076555E9E9B6B85EC7C706 /* debut_dark.png in Resources */,
-				AE7B1BBD199532A9007E16AA /* powered-by-google-on-non-white@2x-compressor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

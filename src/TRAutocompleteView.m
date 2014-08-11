@@ -47,6 +47,7 @@
     __weak UIView *_viewPresenting;
     
     UITableView *_table;
+    UIImageView *googleImage;
     id <TRAutocompleteItemsSource> _itemsSource;
     id <TRAutocompletionCellFactory> _cellFactory;
 }
@@ -81,11 +82,15 @@
         _table.delegate = self;
         _table.dataSource = self;
         
+        googleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"powered-by-google-on-white"]];
+        [googleImage setFrame:CGRectMake(self.frame.size.width - googleImage.frame.size.width,self.frame.size.height - googleImage.frame.size.height, googleImage.frame.size.width / 2.0f, googleImage.frame.size.height / 2.0f)];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryChanged:) name:UITextFieldTextDidChangeNotification object:_queryTextField];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         
         [self addSubview:_table];
+        [self addSubview:googleImage];
     }
     
     return self;
@@ -232,7 +237,8 @@
     {
         [_table reloadData];
         [_table setFrame:CGRectMake(_table.frame.origin.x, _table.frame.origin.y, _table.frame.size.width, _cellHeight * _suggestions.count)];
-        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.height, _table.frame.size.height)];
+        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, _table.frame.size.height)];
+        [googleImage setFrame:CGRectMake(self.frame.size.width - googleImage.frame.size.width, self.frame.size.height - googleImage.frame.size.height, googleImage.frame.size.width, googleImage.frame.size.height)];
     }
 }
 
