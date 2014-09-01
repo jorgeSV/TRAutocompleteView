@@ -38,7 +38,8 @@
 
 @protocol TRSuggestionItem <NSObject>
 
-- (NSString *)completionText;
+- (NSString *)getAddress;
 - (NSString *)getID;
+- (NSString *)getPlaceID;
 
 @end

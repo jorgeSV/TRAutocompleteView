@@ -224,7 +224,7 @@
     
     self.selectedSuggestion = (id <TRSuggestionItem>) suggestion;
     
-    _queryTextField.text = self.selectedSuggestion.completionText;
+    _queryTextField.text = self.selectedSuggestion.getAddress;
     [_queryTextField resignFirstResponder];
     
     if (self.didAutocompleteWith)

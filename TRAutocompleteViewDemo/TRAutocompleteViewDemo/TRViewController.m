@@ -45,7 +45,7 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"debut_dark"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
 
     [_textField setLeftPadding:9];
-    _autocompleteView = [TRAutocompleteView autocompleteViewBindedTo:_textField usingSource:[[TRGoogleMapsAutocompleteItemsSource alloc] initWithMinimumCharactersToTrigger:3  language:@"es" apiKey:@"YOUR_API_KEY" types:@"(cities)"] cellFactory:[[TRGoogleMapsAutocompletionCellFactory alloc] initWithCellForegroundColor:[UIColor lightGrayColor] fontSize:14] presentingIn:self intoView:nil];
+    _autocompleteView = [TRAutocompleteView autocompleteViewBindedTo:_textField usingSource:[[TRGoogleMapsAutocompleteItemsSource alloc] initWithMinimumCharactersToTrigger:3  language:[[NSLocale preferredLanguages] objectAtIndex:0] apiKey:@"YOUR_API_KEY" types:@"(cities)"] cellFactory:[[TRGoogleMapsAutocompletionCellFactory alloc] initWithCellForegroundColor:[UIColor lightGrayColor] fontSize:14] presentingIn:self intoView:nil];
     
     _autocompleteView.topMargin = 0;
     //_autocompleteView.backgroundColor = [UIColor colorWithRed:(27) / 255.0f green:(27) / 255.0f blue:(27) / 255.0f alpha:1];
@@ -54,8 +54,8 @@
 
     _autocompleteView.didAutocompleteWith = ^(id<TRSuggestionItem> item)
     {
-        NSLog(@"Autocompleted with description: %@", item.completionText);
-        NSLog(@"Autocompleted with id: %@", item.getID);
+        NSLog(@"Autocompleted with description: %@", item.getAddress);
+        NSLog(@"Autocompleted with place_id: %@", item.getPlaceID);
     };
 }
 

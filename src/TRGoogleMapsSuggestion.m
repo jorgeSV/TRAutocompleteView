@@ -31,26 +31,32 @@
 
 @implementation TRGoogleMapsSuggestion
 
-- (id)initWith:(NSString *)address WithID:(NSString*)_id
+- (id)initWithAddress:(NSString *)address withID:(NSString*)_id andPlaceID:(NSString*)place_id
 {
     self = [super init];
     if (self)
     {
-        self.address = address;
-        self._id = _id;
+        _address = address;
+        __id = _id;
+        _place_id = place_id;
     }
 
     return self;
 }
 
-- (NSString *)completionText
+- (NSString *)getAddress
 {
-    return self.address;
+    return _address;
 }
 
 - (NSString *)getID
 {
-    return self._id;
+    return __id;
+}
+
+- (NSString *)getPlaceID
+{
+    return _place_id;
 }
 
 @end

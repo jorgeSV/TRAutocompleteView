@@ -32,9 +32,10 @@
 
 @interface TRGoogleMapsSuggestion : NSObject <TRSuggestionItem>
 
-@property(nonatomic) NSString *address;
-@property(nonatomic) NSString *_id;
+@property (nonatomic) NSString *address;
+@property (nonatomic) NSString *_id;
+@property (nonatomic) NSString *place_id;
 
-- (id)initWith:(NSString *)address WithID:(NSString*)_id;
+- (id)initWithAddress:(NSString *)address withID:(NSString*)_id andPlaceID:(NSString*)place_id;
 
 @end
